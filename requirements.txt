@@ -1,0 +1,4 @@
+Flask==3.0.0
+fpdf2==2.7.6
+Pillow==10.1.0
+gunicorn==21.2.0

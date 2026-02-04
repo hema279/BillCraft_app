@@ -1,0 +1,7 @@
+BillCraft_Web/
+│
+├── app.py                # The Brain (Flask Server)
+├── requirements.txt      # The List of Tools (Dependencies)
+├── .gitignore            # Tells Git what to ignore (like temp files)
+└── templates/            # Folder for HTML files (Flask looks here automatically)
+    └── index.html        # The User Interface
