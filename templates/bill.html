@@ -2,325 +2,199 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BillCraft Excel Editor</title>
+    <title>BillCraft Professional</title>
     <style>
-        /* CSS Same as before */
-        body { font-family: 'Segoe UI', sans-serif; max-width: 1200px; margin: auto; padding: 20px; background: #eef2f5; }
-        .sheet { background: white; padding: 20px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-radius: 6px; }
-        .row-group { display: flex; gap: 20px; margin-bottom: 15px; }
-        .input-group { flex: 1; }
-        label { font-weight: bold; font-size: 12px; color: #555; display: block; margin-bottom: 5px; }
-        input[type="text"], input[type="number"], textarea, select { width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box;}
-        .col-wrapper { display: flex; align-items: center; gap: 2px; background: #f0f0f0; padding: 4px; border-radius: 4px; margin-right: 5px;}
-        .col-wrapper input { width: 120px; font-size: 12px; padding: 5px; border: 1px solid #ccc; }
-        .btn-x-small { background: #ff4d4d; color: white; border: none; font-weight: bold; cursor: pointer; padding: 0 6px; height: 100%; border-radius: 3px; font-size: 10px; }
-        table { width: 100%; border-collapse: collapse; margin-top: 15px; background: #fff; table-layout: fixed; }
-        th { background: #f4f4f4; border: 1px solid #ccc; padding: 10px; font-size: 13px; text-align: center; }
-        td { border: 1px solid #ccc; padding: 0; }
-        td input { width: 100%; height: 38px; border: none; padding: 0 10px; box-sizing: border-box; outline: none; font-size: 14px; text-align: center; }
-        td input:focus { background: #e8f0fe; }
-        .toolbar { margin-top: 15px; display: flex; gap: 10px; }
-        button { padding: 10px 15px; border: none; cursor: pointer; border-radius: 4px; font-weight: bold; font-size: 13px; transition: 0.2s; }
-        .btn-blue { background: #007bff; color: white; }
-        .btn-yellow { background: #ff9800; color: white; }
-        .btn-green { background: #28a745; color: white; }
-        .btn-red { background: #dc3545; color: white; width: 40px; }
-        .btn-gen { background: #222; color: white; width: 100%; padding: 15px; font-size: 18px; margin-top: 20px; }
-        .note-input { background: #fffbe6; font-style: italic; color: #555; text-align: left !important; }
-        .total-input { background: #f0fff4; font-weight: bold; text-align: right !important; }
+        body { font-family: 'Segoe UI', sans-serif; max-width: 1000px; margin: auto; padding: 20px; background: #f4f7f6; }
+        .box { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h3 { margin-top: 0; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
+        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em; color: #555; }
+        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        .full-width { grid-column: span 2; }
+        
+        /* Table Styles */
+        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        th, td { border: 1px solid #ddd; padding: 5px; }
+        th { background: #eee; }
+        td input { border: none; width: 100%; text-align: center; font-size: 14px; }
+        
+        .btn { padding: 8px 15px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; margin-right: 5px;}
+        .btn-blue { background: #007bff; }
+        .btn-green { background: #28a745; }
+        .btn-red { background: #dc3545; }
+        .btn-main { background: #222; width: 100%; font-size: 1.2em; margin-top: 20px; padding: 15px; }
     </style>
 </head>
 <body>
 
 <form action="/" method="POST" enctype="multipart/form-data">
 
-    <div class="sheet">
-        <div class="row-group" style="border-bottom: 1px solid #eee; padding-bottom: 15px; margin-bottom: 15px;">
-            <div class="input-group">
-                <label style="color:#007bff">📄 Output File Name</label>
-                <input type="text" name="filename" placeholder="e.g. Invoice_Hema_001">
-            </div>
-            <div class="input-group">
-                <label>Font Size</label>
-                <select name="font_size">
-                    <option value="8">Small (8px)</option>
-                    <option value="9">Normal (9px)</option>
-                    <option value="10" selected>Medium (10px)</option>
-                    <option value="12">Large (12px)</option>
+    <div class="box">
+        <h3>1. Page Settings</h3>
+        <div class="grid">
+            <div>
+                <label>Page Orientation</label>
+                <select name="orientation">
+                    <option value="P">Portrait (Tall A4) - BEST FOR LISTS</option>
+                    <option value="L">Landscape (Wide A4) - BEST FOR WIDE TABLES</option>
                 </select>
             </div>
-        </div>
-
-        <div class="row-group">
-            <div class="input-group">
-                <label>Header Image</label><input type="file" name="header_img">
-            </div>
-            <div class="input-group">
-                <label>Signature Image</label><input type="file" name="sig_img">
+            <div>
+                <label>Output Filename</label>
+                <input type="text" name="filename" placeholder="invoice_001">
             </div>
         </div>
+    </div>
 
-        <div class="row-group">
-            <div class="input-group">
-                <label>Client Address (Required)</label>
-                <textarea name="client_address" rows="5" placeholder="To Address..." required></textarea>
+    <div class="box">
+        <h3>2. Header & Client</h3>
+        <div class="grid">
+            <div>
+                <label>Header Image (Letterhead)</label>
+                <input type="file" name="header_img">
             </div>
-            <div class="input-group">
-                <label>Date (Required)</label>
+            <div>
+                <label>Signature Image</label>
+                <input type="file" name="sig_img">
+            </div>
+            <div class="full-width">
+                <label>Client Address ("TO")</label>
+                <textarea name="client_address" rows="4" placeholder="To Address..."></textarea>
+            </div>
+        </div>
+    </div>
+
+    <div class="box">
+        <h3>3. Bill Details</h3>
+        <div class="grid">
+            <div>
+                <label>Date</label>
                 <input type="text" name="date" placeholder="DD-MM-YYYY" required>
-                <div style="display:flex; gap:10px; margin-top:5px;">
-                    <div style="flex:1">
-                        <label>Bill No (Required)</label>
-                        <input type="text" name="bill_no" placeholder="Check Duplicates" required>
-                    </div>
-                </div>
             </div>
-        </div>
-        
-        <div class="row-group">
-            <div class="input-group" style="flex: 2;">
+            <div>
+                <label>Bill No</label>
+                <input type="text" name="bill_no" placeholder="101" required>
+            </div>
+            <div class="full-width">
                 <label>Subject Line</label>
-                <input type="text" name="subject" placeholder="Transportation Bill...">
+                <input type="text" name="subject" placeholder="Transport charges for...">
             </div>
-            <div class="input-group">
-                <label>From Date</label>
-                <input type="text" name="from_date" placeholder="01-01-2026">
+            <div>
+                <label>Period From</label>
+                <input type="text" name="from_date">
             </div>
-            <div class="input-group">
-                <label>To Date</label>
-                <input type="text" name="to_date" placeholder="06-01-2026">
+            <div>
+                <label>Period To</label>
+                <input type="text" name="to_date">
             </div>
         </div>
     </div>
 
-    <div class="sheet" style="margin-top:20px;">
-        <h3>Bill Details</h3>
-        
-        <div style="background:#fafafa; padding:10px; border:1px solid #eee; margin-bottom: 10px;">
-            <label>Manage Columns:</label>
-            <div style="display:flex; align-items:center; gap: 10px; flex-wrap: wrap;">
-                <div id="col-container" style="display:flex; flex-wrap: wrap; gap:5px;"></div>
-                <button type="button" class="btn-blue" onclick="addNewColumn()" style="height: 32px; padding: 0 15px;">+ Add Col</button>
-            </div>
-        </div>
-
-        <table id="grid">
-            <thead><tr id="header-row"></tr></thead>
-            <tbody id="body-rows"></tbody>
+    <div class="box">
+        <h3>4. Item Table</h3>
+        <button type="button" class="btn btn-blue" onclick="addColumn()">+ Add Column</button>
+        <table id="main-table">
+            <thead>
+                <tr id="head-row">
+                    </tr>
+            </thead>
+            <tbody id="body-rows">
+                </tbody>
         </table>
-
-        <div class="toolbar">
-            <button type="button" class="btn-blue" onclick="addRow()">+ Data Row</button>
-            <button type="button" class="btn-yellow" onclick="addNoteRow()">+ Merged Note</button>
-            <button type="button" class="btn-green" onclick="addTotalRow()">+ Total Row</button>
+        <div style="margin-top:10px;">
+            <button type="button" class="btn btn-blue" onclick="addRow()">+ Row</button>
+            <button type="button" class="btn btn-green" onclick="addTotal()">+ Total</button>
         </div>
     </div>
 
-    <div class="sheet" style="margin-top:20px">
-        <div class="row-group">
-            <div class="input-group"><label>Company Name (For Signature)</label><input type="text" name="company_name"></div>
-            <div class="input-group"><label>Signer Name</label><input type="text" name="signer_name"></div>
+    <div class="box">
+        <h3>5. Signature Info</h3>
+        <div class="grid">
+            <div>
+                <label>Company Name (e.g. For SST)</label>
+                <input type="text" name="company_name">
+            </div>
+            <div>
+                <label>Signer Name (e.g. G. Hemasri)</label>
+                <input type="text" name="signer_name">
+            </div>
         </div>
     </div>
 
-    <button type="submit" class="btn-gen">GENERATE PDF</button>
+    <button type="submit" class="btn btn-main">Generate Professional PDF</button>
 
 </form>
 
-<datalist id="truck-list"></datalist>
-
 <script>
-    // --- 1. LOAD TRUCK DATA ---
-    window.onload = function() {
-        fetch('/api/trucks')
-        .then(response => response.json())
-        .then(data => {
-            let list = document.getElementById('truck-list');
-            list.innerHTML = ""; // Clear existing
-            data.forEach(truck => {
-                let option = document.createElement('option');
-                option.value = truck;
-                list.appendChild(option);
-            });
-            console.log("Loaded trucks:", data); // Debugging
-        });
-    }
-
-    // --- 2. COLUMN & AUTOCOMPLETE LOGIC ---
-
-    function createColumnInput(name) {
-        let div = document.createElement('div');
-        div.className = 'col-wrapper';
-        let input = document.createElement('input');
-        input.type = "text"; input.name = "col_header"; input.value = name;
+    function addColumn(name = "New Col") {
+        let th = document.createElement('th');
+        th.innerHTML = `<input type="text" name="col_header" value="${name}" style="font-weight:bold; background:#eee;">`;
+        document.getElementById('head-row').appendChild(th);
         
-        // CRITICAL: When user types in header, run this to update tables
-        input.onkeyup = updateTableHeaders; 
-        
-        let btn = document.createElement('button');
-        btn.innerText = "x"; btn.className = "btn-x-small"; btn.type = "button"; 
-        btn.onclick = function() { removeColumn(div); };
-        div.appendChild(input); div.appendChild(btn);
-        return div;
-    }
-
-    function updateTableHeaders() {
-        let inputs = document.getElementsByName('col_header');
-        let headerRow = document.getElementById('header-row');
-        headerRow.innerHTML = "";
-        inputs.forEach(input => {
-            let th = document.createElement('th');
-            th.innerText = input.value || "Col";
-            headerRow.appendChild(th);
-        });
-        let thDel = document.createElement('th'); thDel.style.width = "40px"; headerRow.appendChild(thDel);
-        
-        // --- NEW: FORCE SYNC AUTOCOMPLETE ---
-        syncAutocompleteAttributes(); 
-    }
-
-    // --- NEW FUNCTION: The fix for Auto-Type ---
-    // This updates the data rows immediately when you rename a column to "Truck"
-    function syncAutocompleteAttributes() {
-        let colHeaders = document.getElementsByName('col_header');
-        let truckIndices = [];
-        
-        // Find which columns are Truck columns
-        colHeaders.forEach((input, index) => {
-            let name = input.value.toUpperCase();
-            if (name.includes("TRUCK") || name.includes("VEHICLE") || name.includes("NO")) {
-                truckIndices.push(index);
-            }
-        });
-
-        // Loop through all data rows and apply the attribute
         let rows = document.getElementById('body-rows').children;
         for (let row of rows) {
-            let isDataRow = row.querySelector('input[name="row_type"]').value === 'data';
-            if (isDataRow) {
-                let inputs = row.querySelectorAll('td input[name="cell_value"]');
-                inputs.forEach((inp, index) => {
-                    if (truckIndices.includes(index)) {
-                        inp.setAttribute("list", "truck-list");
-                        inp.placeholder = "Type to search...";
-                    } else {
-                        inp.removeAttribute("list");
-                        inp.placeholder = "";
-                    }
-                });
-            }
-        }
-    }
-
-    function addNewColumn() {
-        document.getElementById('col-container').appendChild(createColumnInput("New"));
-        let rows = document.getElementById('body-rows').children;
-        for (let row of rows) {
-            let isDataRow = row.querySelector('input[name="row_type"]').value === 'data';
-            if (isDataRow) {
+            if (row.className === 'data-row') {
                 let td = document.createElement('td');
-                let input = document.createElement('input');
-                input.type = "text"; input.name = "cell_value";
-                td.appendChild(input);
-                row.insertBefore(td, row.lastElementChild);
-            } else {
-                let contentCell = row.children[1]; 
-                if(contentCell) contentCell.colSpan += 1;
+                td.innerHTML = `<input type="text" name="cell_value">`;
+                row.appendChild(td);
             }
         }
-        updateTableHeaders();
-    }
-
-    function removeColumn(colDiv) {
-        let container = document.getElementById('col-container');
-        let allCols = Array.from(container.children);
-        let indexToRemove = allCols.indexOf(colDiv);
-        if (indexToRemove === -1) return;
-        colDiv.remove();
-        let rows = document.getElementById('body-rows').children;
-        for (let row of rows) {
-            let isDataRow = row.querySelector('input[name="row_type"]').value === 'data';
-            if (isDataRow) {
-                let tds = row.querySelectorAll('td');
-                if (tds[indexToRemove]) tds[indexToRemove].remove();
-            } else {
-                let contentCell = row.children[1]; 
-                if(contentCell && contentCell.colSpan > 1) contentCell.colSpan -= 1;
-            }
-        }
-        updateTableHeaders();
     }
 
     function addRow() {
-        let tbody = document.getElementById('body-rows');
         let tr = document.createElement('tr');
-        let type = document.createElement('input');
-        type.type = "hidden"; type.name = "row_type"; type.value = "data";
-        tr.appendChild(type);
+        tr.className = 'data-row';
+        tr.innerHTML = `<input type="hidden" name="row_type" value="data">`;
         
-        let colCount = document.getElementsByName('col_header').length;
-        for(let i=0; i<colCount; i++) {
+        let headers = document.getElementById('head-row').children;
+        for (let i = 0; i < headers.length; i++) {
             let td = document.createElement('td');
-            let input = document.createElement('input');
-            input.type = "text"; input.name = "cell_value";
-            td.appendChild(input);
+            td.innerHTML = `<input type="text" name="cell_value">`;
             tr.appendChild(td);
         }
-        addDeleteBtn(tr);
-        tbody.appendChild(tr);
         
-        // Sync newly added row with current headers
-        syncAutocompleteAttributes();
+        // Add delete button
+        let tdDel = document.createElement('td');
+        tdDel.style.border = "none";
+        tdDel.innerHTML = `<button type="button" class="btn btn-red" onclick="this.parentElement.parentElement.remove()">X</button>`;
+        tr.appendChild(tdDel);
+        
+        document.getElementById('body-rows').appendChild(tr);
     }
 
-    function addNoteRow() {
-        let tbody = document.getElementById('body-rows');
+    function addTotal() {
         let tr = document.createElement('tr');
-        let type = document.createElement('input');
-        type.type = "hidden"; type.name = "row_type"; type.value = "note";
-        tr.appendChild(type);
-        let colCount = document.getElementsByName('col_header').length;
-        let td = document.createElement('td'); td.colSpan = colCount;
-        let input = document.createElement('input');
-        input.type = "text"; input.name = "cell_value"; input.className = "note-input";
-        input.placeholder = "Type note here...";
-        td.appendChild(input); tr.appendChild(td);
-        addDeleteBtn(tr); tbody.appendChild(tr);
+        tr.innerHTML = `<input type="hidden" name="row_type" value="total">`;
+        let headers = document.getElementById('head-row').children;
+        
+        let labelCell = document.createElement('td');
+        labelCell.colSpan = headers.length - 1;
+        labelCell.innerText = "TOTAL:";
+        labelCell.style.textAlign = "right";
+        labelCell.style.fontWeight = "bold";
+        tr.appendChild(labelCell);
+        
+        let valCell = document.createElement('td');
+        valCell.innerHTML = `<input type="text" name="cell_value" style="font-weight:bold;">`;
+        tr.appendChild(valCell);
+        
+        // Add delete button
+        let tdDel = document.createElement('td');
+        tdDel.style.border = "none";
+        tdDel.innerHTML = `<button type="button" class="btn btn-red" onclick="this.parentElement.parentElement.remove()">X</button>`;
+        tr.appendChild(tdDel);
+        
+        document.getElementById('body-rows').appendChild(tr);
     }
 
-    function addTotalRow() {
-        let tbody = document.getElementById('body-rows');
-        let tr = document.createElement('tr');
-        let type = document.createElement('input');
-        type.type = "hidden"; type.name = "row_type"; type.value = "total";
-        tr.appendChild(type);
-        let colCount = document.getElementsByName('col_header').length;
-        let tdLabel = document.createElement('td');
-        tdLabel.colSpan = colCount - 1; tdLabel.innerText = "TOTAL:";
-        tdLabel.style.textAlign = "right"; tdLabel.style.fontWeight = "bold";
-        tr.appendChild(tdLabel);
-        let tdVal = document.createElement('td');
-        let input = document.createElement('input');
-        input.type = "text"; input.name = "cell_value"; input.className = "total-input";
-        tdVal.appendChild(input); tr.appendChild(tdVal);
-        addDeleteBtn(tr); tbody.appendChild(tr);
-    }
-
-    function addDeleteBtn(row) {
-        let td = document.createElement('td');
-        let btn = document.createElement('button');
-        btn.innerText = "X"; btn.className = "btn-red"; btn.type = "button"; 
-        btn.onclick = function() { row.remove(); };
-        td.appendChild(btn); row.appendChild(td);
-    }
-
-    let container = document.getElementById('col-container');
-    container.appendChild(createColumnInput("Date"));
-    container.appendChild(createColumnInput("Description"));
-    container.appendChild(createColumnInput("Truck No")); // Default column
-    container.appendChild(createColumnInput("Amount"));
-    updateTableHeaders();
-    addRow(); 
+    // Init Defaults
+    addColumn("Date");
+    addColumn("Description");
+    addColumn("Truck No");
+    addColumn("Amount");
+    addRow();
+    addRow();
 </script>
+
 </body>
 </html>
