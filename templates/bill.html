@@ -2,199 +2,297 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>BillCraft Professional</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BillCraft </title>
     <style>
-        body { font-family: 'Segoe UI', sans-serif; max-width: 1000px; margin: auto; padding: 20px; background: #f4f7f6; }
-        .box { background: white; padding: 20px; margin-bottom: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h3 { margin-top: 0; color: #333; border-bottom: 2px solid #007bff; padding-bottom: 10px; }
-        .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 0.9em; color: #555; }
-        input, select, textarea { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
-        .full-width { grid-column: span 2; }
+        /* 1. THE DEEP SPACE BACKGROUND */
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            color: #e2e8f0; /* Soft White Text */
+            margin: 0;
+            padding: 40px 20px;
+            min-height: 100vh;
+        }
+
+        h1, h3 { margin: 0; font-weight: 600; letter-spacing: 0.5px; }
+        h1 { text-align: center; margin-bottom: 40px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
+        h3 { color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; }
+
+        /* 2. GLASSMORPHISM PANELS */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            padding: 25px;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            transition: transform 0.2s ease;
+        }
+        .glass-panel:hover {
+            transform: translateY(-2px);
+            border-color: rgba(56, 189, 248, 0.2);
+        }
+
+        /* 3. GRID LAYOUT (BENTO STYLE) */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            max-width: 1200px;
+            margin: auto;
+        }
+        .full-width { grid-column: 1 / -1; }
+
+        /* 4. NEON INPUT FIELDS */
+        label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
         
-        /* Table Styles */
-        table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-        th, td { border: 1px solid #ddd; padding: 5px; }
-        th { background: #eee; }
-        td input { border: none; width: 100%; text-align: center; font-size: 14px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px 15px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            color: #fff;
+            font-size: 1rem;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #38bdf8; /* Cyan Glow */
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            background: rgba(15, 23, 42, 0.8);
+        }
+
+        /* 5. THE TABLE (DATA MATRIX) */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; }
+        th { text-align: left; padding: 10px; color: #94a3b8; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        td { padding: 5px; }
         
-        .btn { padding: 8px 15px; cursor: pointer; border: none; border-radius: 4px; color: white; font-weight: bold; margin-right: 5px;}
-        .btn-blue { background: #007bff; }
-        .btn-green { background: #28a745; }
-        .btn-red { background: #dc3545; }
-        .btn-main { background: #222; width: 100%; font-size: 1.2em; margin-top: 20px; padding: 15px; }
+        td input {
+            background: transparent;
+            border: none;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            border-radius: 0;
+            padding: 8px;
+        }
+        td input:focus { box-shadow: none; border-bottom-color: #38bdf8; }
+
+        /* 6. BUTTONS (HOLOGRAPHIC & GLOWING) */
+        .btn-group { display: flex; gap: 10px; margin-top: 15px; }
+        
+        button {
+            cursor: pointer;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .btn-add { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
+        .btn-add:hover { background: rgba(56, 189, 248, 0.2); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
+
+        .btn-remove { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-remove:hover { background: rgba(239, 68, 68, 0.2); }
+
+        .btn-generate {
+            width: 100%;
+            padding: 18px;
+            margin-top: 40px;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
+            font-size: 1.1rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5);
+        }
+        
+        .btn-generate::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+        }
+        .btn-generate:hover::after { left: 100%; }
+
     </style>
 </head>
 <body>
 
-<form action="/" method="POST" enctype="multipart/form-data">
+    <h1>BillCraft <span style="font-size:0.5em; opacity:0.5; vertical-align:middle;"></span></h1>
 
-    <div class="box">
-        <h3>1. Page Settings</h3>
-        <div class="grid">
-            <div>
-                <label>Page Orientation</label>
+    <form action="/" method="POST" enctype="multipart/form-data">
+        <div class="grid-container">
+
+            <div class="glass-panel">
+                <h3>System Config</h3>
+                <label>Format Mode</label>
                 <select name="orientation">
-                    <option value="P">Portrait (Tall A4) - BEST FOR LISTS</option>
-                    <option value="L">Landscape (Wide A4) - BEST FOR WIDE TABLES</option>
+                    <option value="P">A4 Portrait (Standard)</option>
+                    <option value="L">A4 Landscape (Wide)</option>
                 </select>
-            </div>
-            <div>
+                <br><br>
                 <label>Output Filename</label>
-                <input type="text" name="filename" placeholder="invoice_001">
+                <input type="text" name="filename" placeholder="INV-2026-001">
             </div>
-        </div>
-    </div>
 
-    <div class="box">
-        <h3>2. Header & Client</h3>
-        <div class="grid">
-            <div>
+            <div class="glass-panel">
+                <h3>Identity Assets</h3>
                 <label>Header Image (Letterhead)</label>
-                <input type="file" name="header_img">
+                <input type="file" name="header_img" style="padding:8px;">
+                <br><br>
+                <label>Digital Signature</label>
+                <input type="file" name="sig_img" style="padding:8px;">
             </div>
-            <div>
-                <label>Signature Image</label>
-                <input type="file" name="sig_img">
+
+            <div class="glass-panel full-width">
+                <h3>Client Details</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label>To Address</label>
+                        <textarea name="client_address" rows="5" placeholder="Company Name&#10;Street Address&#10;City, State, Zip"></textarea>
+                    </div>
+                    <div>
+                        <label>Invoice Meta</label>
+                        <input type="text" name="date" placeholder="Date (DD-MM-YYYY)" required style="margin-bottom:10px;">
+                        <input type="text" name="bill_no" placeholder="Bill No" required style="margin-bottom:10px;">
+                        <input type="text" name="subject" placeholder="Subject Line">
+                    </div>
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top:10px;">
+                    <input type="text" name="from_date" placeholder="Period From">
+                    <input type="text" name="to_date" placeholder="Period To">
+                </div>
             </div>
-            <div class="full-width">
-                <label>Client Address ("TO")</label>
-                <textarea name="client_address" rows="4" placeholder="To Address..."></textarea>
+
+            <div class="glass-panel full-width">
+                <h3>Data Matrix</h3>
+                <div class="btn-group">
+                    <button type="button" class="btn-add" onclick="addColumn()">+ Add Column</button>
+                </div>
+                
+                <table id="main-table">
+                    <thead>
+                        <tr id="head-row">
+                            </tr>
+                    </thead>
+                    <tbody id="body-rows">
+                        </tbody>
+                </table>
+
+                <div class="btn-group" style="margin-top: 20px;">
+                    <button type="button" class="btn-add" onclick="addRow()">+ Add Row</button>
+                    <button type="button" class="btn-add" style="border-color:#10b981; color:#10b981;" onclick="addTotal()">+ Add Total</button>
+                </div>
             </div>
+
+            <div class="glass-panel full-width">
+                <h3>Authentication</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <label>Company Name (For...)</label>
+                        <input type="text" name="company_name" placeholder="For Sri Srinivasa Transport">
+                    </div>
+                    <div>
+                        <label>Authorized Signatory</label>
+                        <input type="text" name="signer_name" placeholder="(G. Hemasri)">
+                    </div>
+                </div>
+            </div>
+
         </div>
-    </div>
 
-    <div class="box">
-        <h3>3. Bill Details</h3>
-        <div class="grid">
-            <div>
-                <label>Date</label>
-                <input type="text" name="date" placeholder="DD-MM-YYYY" required>
-            </div>
-            <div>
-                <label>Bill No</label>
-                <input type="text" name="bill_no" placeholder="101" required>
-            </div>
-            <div class="full-width">
-                <label>Subject Line</label>
-                <input type="text" name="subject" placeholder="Transport charges for...">
-            </div>
-            <div>
-                <label>Period From</label>
-                <input type="text" name="from_date">
-            </div>
-            <div>
-                <label>Period To</label>
-                <input type="text" name="to_date">
-            </div>
+        <div style="max-width: 600px; margin: auto;">
+            <button type="submit" class="btn-generate">GENERATE PDF DOCUMENT</button>
         </div>
-    </div>
+    </form>
 
-    <div class="box">
-        <h3>4. Item Table</h3>
-        <button type="button" class="btn btn-blue" onclick="addColumn()">+ Add Column</button>
-        <table id="main-table">
-            <thead>
-                <tr id="head-row">
-                    </tr>
-            </thead>
-            <tbody id="body-rows">
-                </tbody>
-        </table>
-        <div style="margin-top:10px;">
-            <button type="button" class="btn btn-blue" onclick="addRow()">+ Row</button>
-            <button type="button" class="btn btn-green" onclick="addTotal()">+ Total</button>
-        </div>
-    </div>
-
-    <div class="box">
-        <h3>5. Signature Info</h3>
-        <div class="grid">
-            <div>
-                <label>Company Name (e.g. For SST)</label>
-                <input type="text" name="company_name">
-            </div>
-            <div>
-                <label>Signer Name (e.g. G. Hemasri)</label>
-                <input type="text" name="signer_name">
-            </div>
-        </div>
-    </div>
-
-    <button type="submit" class="btn btn-main">Generate Professional PDF</button>
-
-</form>
-
-<script>
-    function addColumn(name = "New Col") {
-        let th = document.createElement('th');
-        th.innerHTML = `<input type="text" name="col_header" value="${name}" style="font-weight:bold; background:#eee;">`;
-        document.getElementById('head-row').appendChild(th);
-        
-        let rows = document.getElementById('body-rows').children;
-        for (let row of rows) {
-            if (row.className === 'data-row') {
-                let td = document.createElement('td');
-                td.innerHTML = `<input type="text" name="cell_value">`;
-                row.appendChild(td);
+    <script>
+        function addColumn(name = "New Col") {
+            let th = document.createElement('th');
+            th.innerHTML = `<input type="text" name="col_header" value="${name}" style="font-weight:bold; color:#38bdf8;">`;
+            document.getElementById('head-row').appendChild(th);
+            
+            let rows = document.getElementById('body-rows').children;
+            for (let row of rows) {
+                if (row.className === 'data-row') {
+                    let td = document.createElement('td');
+                    td.innerHTML = `<input type="text" name="cell_value">`;
+                    row.appendChild(td);
+                }
             }
         }
-    }
 
-    function addRow() {
-        let tr = document.createElement('tr');
-        tr.className = 'data-row';
-        tr.innerHTML = `<input type="hidden" name="row_type" value="data">`;
-        
-        let headers = document.getElementById('head-row').children;
-        for (let i = 0; i < headers.length; i++) {
-            let td = document.createElement('td');
-            td.innerHTML = `<input type="text" name="cell_value">`;
-            tr.appendChild(td);
+        function addRow() {
+            let tr = document.createElement('tr');
+            tr.className = 'data-row';
+            tr.innerHTML = `<input type="hidden" name="row_type" value="data">`;
+            
+            let headers = document.getElementById('head-row').children;
+            for (let i = 0; i < headers.length; i++) {
+                let td = document.createElement('td');
+                td.innerHTML = `<input type="text" name="cell_value">`;
+                tr.appendChild(td);
+            }
+            
+            // Delete Button
+            let tdDel = document.createElement('td');
+            tdDel.style.width = "40px";
+            tdDel.innerHTML = `<button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()">×</button>`;
+            tr.appendChild(tdDel);
+            
+            document.getElementById('body-rows').appendChild(tr);
         }
-        
-        // Add delete button
-        let tdDel = document.createElement('td');
-        tdDel.style.border = "none";
-        tdDel.innerHTML = `<button type="button" class="btn btn-red" onclick="this.parentElement.parentElement.remove()">X</button>`;
-        tr.appendChild(tdDel);
-        
-        document.getElementById('body-rows').appendChild(tr);
-    }
 
-    function addTotal() {
-        let tr = document.createElement('tr');
-        tr.innerHTML = `<input type="hidden" name="row_type" value="total">`;
-        let headers = document.getElementById('head-row').children;
-        
-        let labelCell = document.createElement('td');
-        labelCell.colSpan = headers.length - 1;
-        labelCell.innerText = "TOTAL:";
-        labelCell.style.textAlign = "right";
-        labelCell.style.fontWeight = "bold";
-        tr.appendChild(labelCell);
-        
-        let valCell = document.createElement('td');
-        valCell.innerHTML = `<input type="text" name="cell_value" style="font-weight:bold;">`;
-        tr.appendChild(valCell);
-        
-        // Add delete button
-        let tdDel = document.createElement('td');
-        tdDel.style.border = "none";
-        tdDel.innerHTML = `<button type="button" class="btn btn-red" onclick="this.parentElement.parentElement.remove()">X</button>`;
-        tr.appendChild(tdDel);
-        
-        document.getElementById('body-rows').appendChild(tr);
-    }
+        function addTotal() {
+            let tr = document.createElement('tr');
+            tr.innerHTML = `<input type="hidden" name="row_type" value="total">`;
+            let headers = document.getElementById('head-row').children;
+            
+            let labelCell = document.createElement('td');
+            labelCell.colSpan = headers.length - 1;
+            labelCell.innerText = "TOTAL:";
+            labelCell.style.textAlign = "right";
+            labelCell.style.fontWeight = "bold";
+            labelCell.style.color = "#10b981";
+            labelCell.style.paddingRight = "15px";
+            tr.appendChild(labelCell);
+            
+            let valCell = document.createElement('td');
+            valCell.innerHTML = `<input type="text" name="cell_value" style="font-weight:bold; color:#10b981;">`;
+            tr.appendChild(valCell);
+            
+            let tdDel = document.createElement('td');
+            tdDel.innerHTML = `<button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()">×</button>`;
+            tr.appendChild(tdDel);
+            
+            document.getElementById('body-rows').appendChild(tr);
+        }
 
-    // Init Defaults
-    addColumn("Date");
-    addColumn("Description");
-    addColumn("Truck No");
-    addColumn("Amount");
-    addRow();
-    addRow();
-</script>
+        // Initialize Default Table
+        addColumn("S.NO");
+        addColumn("DESCRIPTION");
+        addColumn("TRUCK NO");
+        addColumn("AMOUNT");
+        addRow();
+        addRow();
+    </script>
 
 </body>
 </html>
