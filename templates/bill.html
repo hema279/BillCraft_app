@@ -3,141 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BillCraft </title>
+    <title>BillCraft | Logistics Command</title>
     <style>
-        /* 1. THE DEEP SPACE BACKGROUND */
-        body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
-            color: #e2e8f0; /* Soft White Text */
-            margin: 0;
-            padding: 40px 20px;
-            min-height: 100vh;
-        }
-
+        body { font-family: 'Segoe UI', sans-serif; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); color: #e2e8f0; margin: 0; padding: 40px 20px; min-height: 100vh; }
         h1, h3 { margin: 0; font-weight: 600; letter-spacing: 0.5px; }
         h1 { text-align: center; margin-bottom: 40px; color: #fff; text-transform: uppercase; letter-spacing: 2px; }
         h3 { color: #38bdf8; border-bottom: 1px solid rgba(56, 189, 248, 0.3); padding-bottom: 10px; margin-bottom: 20px; }
 
-        /* 2. GLASSMORPHISM PANELS */
-        .glass-panel {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            border-radius: 16px;
-            padding: 25px;
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
-            margin-bottom: 30px;
-            transition: transform 0.2s ease;
-        }
-        .glass-panel:hover {
-            transform: translateY(-2px);
-            border-color: rgba(56, 189, 248, 0.2);
-        }
+        .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 25px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3); margin-bottom: 30px; transition: transform 0.2s ease; }
+        .glass-panel:hover { transform: translateY(-2px); border-color: rgba(56, 189, 248, 0.2); }
 
-        /* 3. GRID LAYOUT (BENTO STYLE) */
-        .grid-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 25px;
-            max-width: 1200px;
-            margin: auto;
-        }
+        .grid-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 25px; max-width: 1200px; margin: auto; }
         .full-width { grid-column: 1 / -1; }
 
-        /* 4. NEON INPUT FIELDS */
         label { display: block; margin-bottom: 8px; font-size: 0.85rem; color: #94a3b8; text-transform: uppercase; letter-spacing: 1px; }
-        
-        input, select, textarea {
-            width: 100%;
-            padding: 12px 15px;
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 8px;
-            color: #fff;
-            font-size: 1rem;
-            box-sizing: border-box;
-            transition: all 0.3s ease;
-        }
+        input, select, textarea { width: 100%; padding: 12px 15px; background: rgba(15, 23, 42, 0.6); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 8px; color: #fff; font-size: 1rem; box-sizing: border-box; transition: all 0.3s ease; }
+        input:focus, select:focus, textarea:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 15px rgba(56, 189, 248, 0.2); background: rgba(15, 23, 42, 0.8); }
 
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #38bdf8; /* Cyan Glow */
-            box-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
-            background: rgba(15, 23, 42, 0.8);
-        }
-
-        /* 5. THE TABLE (DATA MATRIX) */
         table { width: 100%; border-collapse: separate; border-spacing: 0; margin-top: 15px; }
         th { text-align: left; padding: 10px; color: #94a3b8; font-size: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.1); }
         td { padding: 5px; }
-        
-        td input {
-            background: transparent;
-            border: none;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
-            border-radius: 0;
-            padding: 8px;
-        }
+        td input { background: transparent; border: none; border-bottom: 1px solid rgba(255,255,255,0.1); border-radius: 0; padding: 8px; }
         td input:focus { box-shadow: none; border-bottom-color: #38bdf8; }
 
-        /* 6. BUTTONS (HOLOGRAPHIC & GLOWING) */
         .btn-group { display: flex; gap: 10px; margin-top: 15px; }
-        
-        button {
-            cursor: pointer;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-size: 0.8rem;
-            transition: all 0.3s ease;
-        }
-
+        button { cursor: pointer; padding: 10px 20px; border: none; border-radius: 8px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; font-size: 0.8rem; transition: all 0.3s ease; }
         .btn-add { background: rgba(56, 189, 248, 0.1); color: #38bdf8; border: 1px solid rgba(56, 189, 248, 0.3); }
         .btn-add:hover { background: rgba(56, 189, 248, 0.2); box-shadow: 0 0 10px rgba(56, 189, 248, 0.2); }
-
         .btn-remove { background: rgba(239, 68, 68, 0.1); color: #ef4444; border: 1px solid rgba(239, 68, 68, 0.3); }
         .btn-remove:hover { background: rgba(239, 68, 68, 0.2); }
 
-        .btn-generate {
-            width: 100%;
-            padding: 18px;
-            margin-top: 40px;
-            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
-            color: white;
-            font-size: 1.1rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .btn-generate:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5);
-        }
-        
-        .btn-generate::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 100%; height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
-            transition: 0.5s;
-        }
-        .btn-generate:hover::after { left: 100%; }
-
+        .btn-generate { width: 100%; padding: 18px; margin-top: 40px; background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%); color: white; font-size: 1.1rem; border-radius: 12px; box-shadow: 0 10px 25px rgba(59, 130, 246, 0.4); position: relative; overflow: hidden; }
+        .btn-generate:hover { transform: translateY(-2px); box-shadow: 0 15px 35px rgba(59, 130, 246, 0.5); }
     </style>
 </head>
 <body>
 
-    <h1>BillCraft <span style="font-size:0.5em; opacity:0.5; vertical-align:middle;"></span></h1>
+    <h1>BillCraft <span style="font-size:0.5em; opacity:0.5; vertical-align:middle;">PRO v28.2</span></h1>
 
-    <form action="/" method="POST" enctype="multipart/form-data">
+    <form action="/" method="POST" enctype="multipart/form-data" autocomplete="on">
         <div class="grid-container">
 
             <div class="glass-panel">
@@ -189,11 +93,9 @@
                 
                 <table id="main-table">
                     <thead>
-                        <tr id="head-row">
-                            </tr>
+                        <tr id="head-row"></tr>
                     </thead>
-                    <tbody id="body-rows">
-                        </tbody>
+                    <tbody id="body-rows"></tbody>
                 </table>
 
                 <div class="btn-group" style="margin-top: 20px;">
@@ -251,7 +153,6 @@
                 tr.appendChild(td);
             }
             
-            // Delete Button
             let tdDel = document.createElement('td');
             tdDel.style.width = "40px";
             tdDel.innerHTML = `<button type="button" class="btn-remove" onclick="this.parentElement.parentElement.remove()">×</button>`;
@@ -285,13 +186,25 @@
             document.getElementById('body-rows').appendChild(tr);
         }
 
-        // Initialize Default Table
         addColumn("S.NO");
         addColumn("DESCRIPTION");
         addColumn("TRUCK NO");
         addColumn("AMOUNT");
         addRow();
         addRow();
+
+        // FIX: The Enter Key Trap to prevent accidental downloading!
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter' && event.target.tagName === 'INPUT') {
+                event.preventDefault(); 
+                let form = event.target.form;
+                let elements = Array.from(form.elements).filter(el => el.tagName === 'INPUT' && el.type !== 'hidden');
+                let index = elements.indexOf(event.target);
+                if (index > -1 && index < elements.length - 1) {
+                    elements[index + 1].focus(); 
+                }
+            }
+        });
     </script>
 
 </body>
