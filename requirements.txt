@@ -2,3 +2,4 @@ Flask==3.0.0
 fpdf2==2.7.6
 Pillow>=10.3.0
 gunicorn==21.2.0
+xhtml2pdf==0.2.11
