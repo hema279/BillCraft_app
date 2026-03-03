@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Invoice</title>
+    <style>
+        @page {
+            /* This magically handles Portrait vs Landscape dynamically */
+            size: {{ 'a4 landscape' if data.orientation == 'L' else 'a4 portrait' }};
+            margin: 1.5cm;
+        }
+        body { font-family: Helvetica, sans-serif; font-size: 10px; color: #000; }
+        .header-img { width: 100%; max-height: 120px; object-fit: contain; text-align: center; margin-bottom: 20px; }
+        .meta-box { width: 100%; margin-bottom: 15px; }
+        .meta-box td { padding: 3px; border: none; }
+        .center-text { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 10px; }
+        
+        /* THE MAGIC TABLE - Auto adjusts widths and wraps text perfectly! */
+        table.data-table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+        table.data-table th, table.data-table td { border: 1px solid #000; padding: 6px; text-align: center; word-wrap: break-word; }
+        table.data-table th { background-color: #f2f2f2; font-weight: bold; }
+        
+        /* Prevents rows from cutting exactly in half between pages */
+        tr { page-break-inside: avoid; } 
+        
+        .signature-box { width: 300px; float: right; text-align: center; margin-top: 40px; page-break-inside: avoid; }
+        .sig-img { width: 150px; height: auto; margin: 10px 0; }
+    </style>
+</head>
+<body>
+
+    {% if header_b64 %}
+    <div style="text-align: center;">
+        <img src="data:image/jpeg;base64,{{ header_b64 }}" class="header-img">
+    </div>
+    {% endif %}
+
+    <table class="meta-box">
+        <tr>
+            <td style="width: 70%; vertical-align: top;">
+                <b>TO,</b><br>
+                {% for line in data.client_address %}
+                    {{ line }}<br>
+                {% endfl %}
+            </td>
+            <td style="width: 30%; vertical-align: top; text-align: right;">
+                <b>DATE:</b> {{ data.date }}
+            </td>
+        </tr>
+    </table>
+
+    {% if data.subject %}
+        <div class="center-text">SUB: {{ data.subject }}</div>
+    {% endif %}
+    {% if data.from_date or data.to_date %}
+        <div class="center-text">PERIOD FROM {{ data.from_date }} TO {{ data.to_date }}</div>
+    {% endif %}
+    <div class="center-text" style="font-size: 14px;">BILL NO: {{ data.bill_no }}</div>
+
+    <table class="data-table">
+        <thead>
+            <tr>
+                {% for col in data.columns %}
+                    <th>{{ col }}</th>
+                {% endfor %}
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in data.rows %}
+                {% if row.type == 'data' %}
+                <tr>
+                    {% for cell in row.data %}
+                        <td>{{ cell }}</td>
+                    {% endfor %}
+                </tr>
+                {% elif row.type == 'total' %}
+                <tr>
+                    <td colspan="{{ data.columns|length - 1 }}" style="text-align: right; font-weight: bold; font-size: 12px;">TOTAL / GRAND TOTAL:</td>
+                    <td style="font-weight: bold; font-size: 12px;">{{ row.data[0] }}</td>
+                </tr>
+                {% endif %}
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="signature-box">
+        {% if data.company_name %}
+            <b>{{ 'For ' if not data.company_name.lower().startswith('for') else '' }}{{ data.company_name }}</b><br>
+        {% endif %}
+        
+        {% if sig_b64 %}
+            <img src="data:image/png;base64,{{ sig_b64 }}" class="sig-img"><br>
+        {% else %}
+            <br><br><br><br>
+        {% endif %}
+        
+        {% if data.signer_name %}
+            <b>{{ data.signer_name if data.signer_name.startswith('(') else '(' ~ data.signer_name ~ ')' }}</b>
+        {% endif %}
+    </div>
+
+</body>
+</html>
