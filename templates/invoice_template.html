@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>Invoice</title>
     <style>
+        /* This line pulls the CSS from the file above! */
         {% include 'invoice_style.css' %}
     </style>
 </head>
@@ -41,7 +42,21 @@
         <thead>
             <tr>
                 {% for col in data.columns %}
-                    <th>{{ col }}</th>
+                    {% set col_name = col|upper|trim %}
+                    
+                    {% if col_name == 'S.NO' %}
+                        <th style="width: 4%;">{{ col }}</th>
+                    {% elif col_name == 'MT' or col_name == 'RATE' %}
+                        <th style="width: 5%;">{{ col }}</th>
+                    {% elif col_name == 'DATE' %}
+                        <th style="width: 7%;">{{ col }}</th>
+                    {% elif col_name == 'UNLOADING' %}
+                        <th style="width: 26%;">{{ col }}</th>
+                    {% elif col_name == 'IN DATE' or col_name == 'OUT DATE' or col_name == 'INDATE' or col_name == 'OUTDATE' %}
+                        <th style="width: 11%;">{{ col }}</th>
+                    {% else %}
+                        <th>{{ col }}</th>
+                    {% endif %}
                 {% endfor %}
             </tr>
         </thead>
