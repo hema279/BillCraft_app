@@ -32,21 +32,19 @@ def index():
         # 2. Parse the dynamic table arrays intelligently
         row_types = request.form.getlist('row_type')
         all_cells = request.form.getlist('cell_value')
-        
-        cell_idx = 0
+
+        column_count = len(data['columns'])
+        cell_iter = iter(all_cells)
         for r_type in row_types:
+            if not r_type:
+                continue
+
             if r_type == 'data':
-                row_data = []
-                for _ in data['columns']:
-                    val = all_cells[cell_idx] if cell_idx < len(all_cells) else ""
-                    row_data.append(val)
-                    cell_idx += 1
+                row_data = [next(cell_iter, "") for _ in range(column_count)]
                 data['rows'].append({'type': 'data', 'data': row_data})
-            
             elif r_type == 'total':
-                val = all_cells[cell_idx] if cell_idx < len(all_cells) else ""
-                data['rows'].append({'type': 'total', 'data': [val]})
-                cell_idx += 1
+                total_value = next(cell_iter, "")
+                data['rows'].append({'type': 'total', 'data': [total_value]})
 
         # 3. Process Images into memory (No saving to disk!)
         header_b64 = get_base64_image(request.files.get('header_img'))
