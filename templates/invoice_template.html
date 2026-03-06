@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>Invoice</title>
     <style>
-        /* This pulls the CSS from invoice_style.css */
         {% include 'invoice_style.css' %}
     </style>
 </head>
@@ -18,13 +17,13 @@
 
     <table class="meta-box">
         <tr>
-            <td style="width: 70%; vertical-align: top;">
+            <td class="address-col">
                 <b>TO,</b><br>
                 {% for line in data.client_address %}
                     {{ line }}<br>
                 {% endfor %}
             </td>
-            <td style="width: 30%; vertical-align: top; text-align: right;">
+            <td class="date-col">
                 <b>DATE:</b> {{ data.date }}
             </td>
         </tr>
@@ -59,9 +58,16 @@
 
             {% if data.footers %}
                 {% for footer in data.footers %}
+                
+                {% set is_grand = 'GRAND' in footer.label|upper or 'TOTAL' == footer.label|upper %}
+                
                 <tr>
-                    <td colspan="{{ data.columns|length - 1 }}" style="text-align: right; font-weight: bold; font-size: 11px; padding-right: 10px;">{{ footer.label|upper }}:</td>
-                    <td style="font-weight: bold; font-size: 11px;">{{ footer.value }}</td>
+                    <td colspan="{{ data.columns|length - 1 }}" style="text-align: right; font-weight: bold; font-size: {{ '13px' if is_grand else '11px' }}; padding-right: 10px;">
+                        {{ footer.label|upper }}:
+                    </td>
+                    <td style="text-align: right; font-weight: bold; font-size: {{ '13px' if is_grand else '11px' }}; background-color: {{ '#f2f2f2' if is_grand else 'transparent' }};">
+                        {{ footer.value }}
+                    </td>
                 </tr>
                 {% endfor %}
             {% endif %}

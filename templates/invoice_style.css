@@ -1,14 +1,17 @@
 @page {
     size: {{ 'a4 landscape' if data.orientation == 'L' else 'a4 portrait' }};
-    /* Reduced margin from 1.5cm to 1.0cm to give more vertical room for the signature */
     margin: 1.0cm; 
 }
 body { font-family: Helvetica, sans-serif; font-size: 10px; color: #000; }
 
 .header-img { width: 100%; max-height: 120px; text-align: center; margin-bottom: 15px; }
 
-table.meta-box { width: 100%; margin-bottom: 15px; border: none; }
+table.meta-box { width: 100%; margin-bottom: 15px; border: none; table-layout: fixed; }
 table.meta-box td { border: none; padding: 2px; }
+
+/* FIX 2: Restricting address width so it stacks beautifully like a block */
+.address-col { width: 45%; vertical-align: top; text-align: left; line-height: 1.5; padding-right: 20px; }
+.date-col { width: 55%; vertical-align: top; text-align: right; }
 
 .center-text { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 6px; }
 .bill-no-text { text-align: center; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
@@ -20,8 +23,7 @@ table.data-table {
 }
 table.data-table th, table.data-table td { 
     border: 1px solid #000; 
-    /* CHANGED: 4px top/bottom (compressed vertically), 8px left/right (keeps Excel width) */
-    padding: 4px 8px; 
+    padding: 5px 8px; 
     text-align: center; 
     vertical-align: middle;
     font-size: 9px; 
@@ -32,13 +34,19 @@ table.data-table th {
     font-size: 10px; 
     white-space: nowrap; 
 }
-table.data-table td { 
-    word-wrap: break-word; 
+
+/* FIX 1: Automatically Right-Align the last two columns (Rate & Freight) */
+table.data-table th:nth-last-child(1), 
+table.data-table td:nth-last-child(1),
+table.data-table th:nth-last-child(2), 
+table.data-table td:nth-last-child(2) {
+    text-align: right;
 }
+
+table.data-table td { word-wrap: break-word; }
 
 tr { page-break-inside: avoid; } 
 
-/* Reduced top margin so signature pulls up closer to the table */
 table.sig-table { width: 100%; border: none; page-break-inside: avoid; margin-top: 15px; }
 table.sig-table td { border: none; }
 .sig-img { width: 140px; height: auto; margin: 5px 0; }
