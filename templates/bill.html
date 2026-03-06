@@ -63,11 +63,16 @@
         <div class="row">
             <div class="col">
                 <label>To Address (Client):</label>
-                <textarea id="clientAddress" placeholder="VIJAYA LAKSHMI CONSTRUCTIONS..."></textarea>
+                <textarea id="clientAddress" placeholder="Enter Client Address here...">VIJAYA LAKSHMI CONSTRUCTIONS,
+18-7-14, GF-114,
+ABC CONSTRUCTION, KRISHNA NAGAR PORT COLONY,
+MADHURAWADA, VISAKHAPATNAM.
+530048</textarea>
             </div>
             <div class="col">
                 <label>Subject:</label>
-                <textarea id="subject" placeholder="BITUMEN TRANSPORTATION BILL FROM..."></textarea>
+                <textarea id="subject" placeholder="BITUMEN TRANSPORTATION BILL FROM...">BITUMEN TRANSPORTATION BILL FROM HPCL TO JONNADA, KATHIPUDI, JARJENGI
+PERIOD FROM 30-01-26 TO 28-02-26</textarea>
             </div>
         </div>
 
@@ -106,16 +111,13 @@
 
         <h3>3. Bill Data (Table)</h3>
         <div class="info-text">You can change the columns by typing comma-separated names below. The table will update automatically!</div>
-        
         <label>Table Columns (Comma Separated):</label>
         <input type="text" id="columnNames" value="S.NO, DATE, TRUCK NO, DOC NO, GRAD, UNLOADING, MT, RATE, IN DATE, OUT DATE, FREIGHT" onkeyup="debounceTableGeneration()">
 
         <div class="table-responsive">
             <table id="dataTable">
-                <thead id="tableHead">
-                    </thead>
-                <tbody id="tableBody">
-                    </tbody>
+                <thead id="tableHead"></thead>
+                <tbody id="tableBody"></tbody>
             </table>
         </div>
         <button type="button" class="btn-add" onclick="addDataRow()">+ Add Data Row</button>
@@ -135,11 +137,10 @@
 </div>
 
 <script>
-    // --- Dynamic Column Magic ---
     let timeoutId;
     function debounceTableGeneration() {
         clearTimeout(timeoutId);
-        timeoutId = setTimeout(generateTable, 500); // Waits half a second after typing to update table
+        timeoutId = setTimeout(generateTable, 500); 
     }
 
     function getColumnsArray() {
@@ -149,7 +150,6 @@
     function generateTable() {
         const cols = getColumnsArray();
         
-        // 1. Rebuild Header
         const thead = document.getElementById('tableHead');
         thead.innerHTML = '';
         const trHead = document.createElement('tr');
@@ -163,7 +163,6 @@
         trHead.appendChild(actionTh);
         thead.appendChild(trHead);
 
-        // 2. Rebuild Body (Clear and add 1 empty row)
         const tbody = document.getElementById('tableBody');
         tbody.innerHTML = '';
         addDataRow();
@@ -181,7 +180,6 @@
             const td = document.createElement('td');
             const inp = document.createElement('input');
             inp.type = "text";
-            // Auto-fill S.NO if the first column is named S.NO or SNO
             if(index === 0 && (col.toUpperCase() === 'S.NO' || col.toUpperCase() === 'SNO')) {
                 inp.value = formattedSno;
             }
@@ -196,10 +194,8 @@
         tbody.appendChild(tr);
     }
 
-    // Initialize table on load
     window.onload = generateTable;
 
-    // --- Helper for Images ---
     function getBase64(file) {
         return new Promise((resolve, reject) => {
             if (!file) { resolve(""); return; }
@@ -210,7 +206,6 @@
         });
     }
 
-    // --- Add Dynamic Footer Row ---
     function addFooterRow() {
         const container = document.getElementById('footerContainer');
         const div = document.createElement('div');
@@ -223,7 +218,6 @@
         container.appendChild(div);
     }
 
-    // --- Form Submission ---
     document.getElementById('invoiceForm').addEventListener('submit', async function(e) {
         e.preventDefault();
         
@@ -257,13 +251,13 @@
                 orientation: document.getElementById('orientation').value,
                 bill_no: document.getElementById('billNo').value,
                 date: document.getElementById('billDate').value,
-                client_address: document.getElementById('clientAddress').value.split('\\n').filter(line => line.trim() !== ""),
+                // THE BUG FIX IS HERE: split('\n') instead of split('\\n')
+                client_address: document.getElementById('clientAddress').value.split('\n').filter(line => line.trim() !== ""),
                 subject: document.getElementById('subject').value,
                 from_date: document.getElementById('periodFrom').value,
                 to_date: document.getElementById('periodTo').value,
                 company_name: document.getElementById('companyName').value,
                 signer_name: document.getElementById('signerName').value,
-                // Using the dynamic columns array here!
                 columns: getColumnsArray(),
                 rows: rows,
                 footers: footers
