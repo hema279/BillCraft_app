@@ -1,34 +1,44 @@
 @page {
     size: {{ 'a4 landscape' if data.orientation == 'L' else 'a4 portrait' }};
-    margin: 1.5cm;
+    /* Reduced margin from 1.5cm to 1.0cm to give more vertical room for the signature */
+    margin: 1.0cm; 
 }
 body { font-family: Helvetica, sans-serif; font-size: 10px; color: #000; }
 
-.header-img { width: 100%; max-height: 120px; text-align: center; margin-bottom: 20px; }
+.header-img { width: 100%; max-height: 120px; text-align: center; margin-bottom: 15px; }
 
-/* Top Address & Date Block */
-table.meta-box { width: 100%; margin-bottom: 20px; border: none; }
+table.meta-box { width: 100%; margin-bottom: 15px; border: none; }
 table.meta-box td { border: none; padding: 2px; }
 
-.center-text { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 8px; }
-.bill-no-text { text-align: center; font-weight: bold; font-size: 14px; margin-bottom: 15px; }
+.center-text { text-align: center; font-weight: bold; font-size: 11px; margin-bottom: 6px; }
+.bill-no-text { text-align: center; font-weight: bold; font-size: 14px; margin-bottom: 10px; }
 
-/* The Dynamic Data Table - Space Optimized */
-table.data-table { width: 100%; border-collapse: collapse; table-layout: auto; }
+table.data-table { 
+    width: 100%; 
+    border-collapse: collapse; 
+    table-layout: auto; 
+}
 table.data-table th, table.data-table td { 
     border: 1px solid #000; 
-    padding: 6px 5px; 
+    /* CHANGED: 4px top/bottom (compressed vertically), 8px left/right (keeps Excel width) */
+    padding: 4px 8px; 
     text-align: center; 
     vertical-align: middle;
     font-size: 9px; 
+}
+table.data-table th { 
+    background-color: #f2f2f2; 
+    font-weight: bold; 
+    font-size: 10px; 
+    white-space: nowrap; 
+}
+table.data-table td { 
     word-wrap: break-word; 
 }
-table.data-table th { background-color: #f2f2f2; font-weight: bold; font-size: 10px; }
 
-/* Stop rows from breaking exactly in half */
 tr { page-break-inside: avoid; } 
 
-/* The Signature Block Fix */
-table.sig-table { width: 100%; border: none; page-break-inside: avoid; }
+/* Reduced top margin so signature pulls up closer to the table */
+table.sig-table { width: 100%; border: none; page-break-inside: avoid; margin-top: 15px; }
 table.sig-table td { border: none; }
 .sig-img { width: 140px; height: auto; margin: 5px 0; }
