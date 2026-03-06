@@ -15,7 +15,6 @@
         input[type="text"], input[type="file"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         textarea { height: 80px; resize: vertical; }
         
-        /* Table Styles */
         .table-responsive { overflow-x: auto; }
         table { width: 100%; border-collapse: collapse; margin-top: 10px; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
@@ -23,7 +22,6 @@
         td input { width: 100%; border: none; outline: none; text-align: center; font-size: 13px; background: transparent; }
         td input:focus { border-bottom: 1px solid #3498db; }
         
-        /* Buttons */
         button { padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 14px; transition: 0.3s; }
         .btn-add { background-color: #2ecc71; color: white; margin-top: 10px; }
         .btn-add:hover { background-color: #27ae60; }
@@ -32,7 +30,6 @@
         .btn-generate { background-color: #3498db; color: white; width: 100%; font-size: 18px; padding: 15px; margin-top: 30px; }
         .btn-generate:hover { background-color: #2980b9; }
 
-        /* Dynamic Footers */
         .footer-row { display: flex; gap: 15px; margin-bottom: 10px; align-items: center; background: #f9f9f9; padding: 10px; border-radius: 5px; border: 1px solid #eee; }
         .footer-row input { flex: 1; }
     </style>
@@ -65,3 +62,211 @@
         <div class="row">
             <div class="col">
                 <label>To Address (Client):</label>
+                <textarea id="clientAddress" placeholder="VIJAYA LAKSHMI CONSTRUCTIONS..."></textarea>
+            </div>
+            <div class="col">
+                <label>Subject:</label>
+                <textarea id="subject" placeholder="BITUMEN TRANSPORTATION BILL FROM..."></textarea>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <label>Period From:</label>
+                <input type="text" id="periodFrom" placeholder="DD-MM-YY">
+            </div>
+            <div class="col">
+                <label>Period To:</label>
+                <input type="text" id="periodTo" placeholder="DD-MM-YY">
+            </div>
+        </div>
+
+        <h3>2. Header & Signature Details</h3>
+        <div class="row">
+            <div class="col">
+                <label>Header Image:</label>
+                <input type="file" id="headerImg" accept="image/*">
+            </div>
+            <div class="col">
+                <label>Signature Image:</label>
+                <input type="file" id="sigImg" accept="image/*">
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Company Name:</label>
+                <input type="text" id="companyName" value="For SRI SRINIVASA TRANSPORT">
+            </div>
+            <div class="col">
+                <label>Signer Name:</label>
+                <input type="text" id="signerName" value="(G.SRINU)">
+            </div>
+        </div>
+
+        <h3>3. Bill Data (Table)</h3>
+        <div class="table-responsive">
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>S.NO</th>
+                        <th>DATE</th>
+                        <th>TRUCK NO</th>
+                        <th>DOC NO</th>
+                        <th>GRAD</th>
+                        <th>UNLOADING</th>
+                        <th>MT</th>
+                        <th>RATE</th>
+                        <th>IN DATE</th>
+                        <th>OUT DATE</th>
+                        <th>FREIGHT</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="tableBody">
+                    <tr>
+                        <td><input type="text" value="01"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><input type="text"></td>
+                        <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">X</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <button type="button" class="btn-add" onclick="addDataRow()">+ Add Data Row</button>
+
+        <h3>4. Custom Footer Rows (Totals / Balances)</h3>
+        <div id="footerContainer">
+            <div class="footer-row">
+                <input type="text" class="footer-label" value="TOTAL / GRAND TOTAL" placeholder="Label">
+                <input type="text" class="footer-value" placeholder="Amount">
+                <button type="button" class="btn-remove" onclick="this.closest('.footer-row').remove()">X</button>
+            </div>
+        </div>
+        <button type="button" class="btn-add" onclick="addFooterRow()">+ Add Extra Footer Row</button>
+
+        <button type="submit" class="btn-generate">Generate PDF Invoice</button>
+    </form>
+</div>
+
+<script>
+    function getBase64(file) {
+        return new Promise((resolve, reject) => {
+            if (!file) { resolve(""); return; }
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]); 
+            reader.onerror = error => reject(error);
+        });
+    }
+
+    function addDataRow() {
+        const tbody = document.getElementById('tableBody');
+        const rowCount = tbody.children.length + 1;
+        const formattedSno = rowCount < 10 ? '0' + rowCount : rowCount;
+        
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+            <td><input type="text" value="${formattedSno}"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><input type="text"></td>
+            <td><button type="button" class="btn-remove" onclick="this.closest('tr').remove()">X</button></td>
+        `;
+        tbody.appendChild(tr);
+    }
+
+    function addFooterRow() {
+        const container = document.getElementById('footerContainer');
+        const div = document.createElement('div');
+        div.className = 'footer-row';
+        div.innerHTML = `
+            <input type="text" class="footer-label" placeholder="Label (e.g., Old Balance)">
+            <input type="text" class="footer-value" placeholder="Amount">
+            <button type="button" class="btn-remove" onclick="this.closest('.footer-row').remove()">X</button>
+        `;
+        container.appendChild(div);
+    }
+
+    document.getElementById('invoiceForm').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        
+        const headerFile = document.getElementById('headerImg').files[0];
+        const sigFile = document.getElementById('sigImg').files[0];
+        const header_b64 = await getBase64(headerFile);
+        const sig_b64 = await getBase64(sigFile);
+
+        const rows = [];
+        document.querySelectorAll('#tableBody tr').forEach(tr => {
+            const inputs = tr.querySelectorAll('td input');
+            const rowData = Array.from(inputs).map(inp => inp.value.trim());
+            if (rowData.some(val => val !== "")) {
+                rows.push({ type: 'data', data: rowData });
+            }
+        });
+
+        const footers = [];
+        document.querySelectorAll('.footer-row').forEach(row => {
+            const label = row.querySelector('.footer-label').value.trim();
+            const value = row.querySelector('.footer-value').value.trim();
+            if (label || value) {
+                footers.push({ label: label, value: value });
+            }
+        });
+
+        const payload = {
+            header_b64: header_b64,
+            sig_b64: sig_b64,
+            data: {
+                orientation: document.getElementById('orientation').value,
+                bill_no: document.getElementById('billNo').value,
+                date: document.getElementById('billDate').value,
+                client_address: document.getElementById('clientAddress').value.split('\\n').filter(line => line.trim() !== ""),
+                subject: document.getElementById('subject').value,
+                from_date: document.getElementById('periodFrom').value,
+                to_date: document.getElementById('periodTo').value,
+                company_name: document.getElementById('companyName').value,
+                signer_name: document.getElementById('signerName').value,
+                columns: ["S.NO", "DATE", "TRUCK NO", "DOC NO", "GRAD", "UNLOADING", "MT", "RATE", "IN DATE", "OUT DATE", "FREIGHT"],
+                rows: rows,
+                footers: footers
+            }
+        };
+
+        try {
+            const response = await fetch('/', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                window.open(url, '_blank');
+            } else {
+                alert("Failed to generate PDF. Check server logs.");
+            }
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Error connecting to server.");
+        }
+    });
+</script>
+
+</body>
+</html>
