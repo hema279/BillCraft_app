@@ -45,11 +45,11 @@
         <div class="row">
             <div class="col">
                 <label>Bill No:</label>
-                <input type="text" id="billNo" value="02" required>
+                <input type="text" id="billNo" placeholder="e.g., 01" required>
             </div>
             <div class="col">
                 <label>Date:</label>
-                <input type="text" id="billDate" placeholder="DD-MM-YY" value="06-03-26" required>
+                <input type="text" id="billDate" placeholder="DD-MM-YY" required>
             </div>
             <div class="col">
                 <label>Orientation:</label>
@@ -63,16 +63,11 @@
         <div class="row">
             <div class="col">
                 <label>To Address (Client):</label>
-                <textarea id="clientAddress" placeholder="Enter Client Address here...">VIJAYA LAKSHMI CONSTRUCTIONS,
-18-7-14, GF-114,
-ABC CONSTRUCTION, KRISHNA NAGAR PORT COLONY,
-MADHURAWADA, VISAKHAPATNAM.
-530048</textarea>
+                <textarea id="clientAddress" placeholder="Enter Client Address here..."></textarea>
             </div>
             <div class="col">
                 <label>Subject:</label>
-                <textarea id="subject" placeholder="BITUMEN TRANSPORTATION BILL FROM...">BITUMEN TRANSPORTATION BILL FROM HPCL TO JONNADA, KATHIPUDI, JARJENGI
-PERIOD FROM 30-01-26 TO 28-02-26</textarea>
+                <textarea id="subject" placeholder="Enter Bill Subject..."></textarea>
             </div>
         </div>
 
@@ -101,11 +96,11 @@ PERIOD FROM 30-01-26 TO 28-02-26</textarea>
         <div class="row">
             <div class="col">
                 <label>Company Name:</label>
-                <input type="text" id="companyName" value="For SRI SRINIVASA TRANSPORT">
+                <input type="text" id="companyName" placeholder="e.g., For SRI SRINIVASA TRANSPORT">
             </div>
             <div class="col">
                 <label>Signer Name:</label>
-                <input type="text" id="signerName" value="(G.SRINU)">
+                <input type="text" id="signerName" placeholder="e.g., (G.SRINU)">
             </div>
         </div>
 
@@ -125,7 +120,7 @@ PERIOD FROM 30-01-26 TO 28-02-26</textarea>
         <h3>4. Custom Footer Rows (Totals / Balances)</h3>
         <div id="footerContainer">
             <div class="footer-row">
-                <input type="text" class="footer-label" value="TOTAL / GRAND TOTAL" placeholder="Label">
+                <input type="text" class="footer-label" value="TOTAL" placeholder="Label">
                 <input type="text" class="footer-value" placeholder="Amount">
                 <button type="button" class="btn-remove" onclick="this.closest('.footer-row').remove()">X</button>
             </div>
@@ -251,7 +246,6 @@ PERIOD FROM 30-01-26 TO 28-02-26</textarea>
                 orientation: document.getElementById('orientation').value,
                 bill_no: document.getElementById('billNo').value,
                 date: document.getElementById('billDate').value,
-                // THE BUG FIX IS HERE: split('\n') instead of split('\\n')
                 client_address: document.getElementById('clientAddress').value.split('\n').filter(line => line.trim() !== ""),
                 subject: document.getElementById('subject').value,
                 from_date: document.getElementById('periodFrom').value,
@@ -286,4 +280,4 @@ PERIOD FROM 30-01-26 TO 28-02-26</textarea>
 </script>
 
 </body>
-</html>
+</html> 
