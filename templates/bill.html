@@ -12,7 +12,7 @@
         .row { display: flex; gap: 20px; margin-bottom: 15px; }
         .col { flex: 1; }
         label { display: block; font-weight: bold; margin-bottom: 5px; font-size: 14px; }
-        input[type="text"], input[type="file"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        input[type="text"], input[type="date"], input[type="file"], textarea, select { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
         textarea { height: 80px; resize: vertical; }
         
         .table-responsive { overflow-x: auto; margin-top: 15px; }
@@ -49,7 +49,7 @@
             </div>
             <div class="col">
                 <label>Date:</label>
-                <input type="text" id="billDate" placeholder="DD-MM-YY" required>
+                <input type="date" id="billDate" required>
             </div>
             <div class="col">
                 <label>Orientation:</label>
@@ -74,11 +74,11 @@
         <div class="row">
             <div class="col">
                 <label>Period From:</label>
-                <input type="text" id="periodFrom" placeholder="DD-MM-YY">
+                <input type="date" id="periodFrom">
             </div>
             <div class="col">
                 <label>Period To:</label>
-                <input type="text" id="periodTo" placeholder="DD-MM-YY">
+                <input type="date" id="periodTo">
             </div>
         </div>
 
@@ -132,6 +132,23 @@
 </div>
 
 <script>
+    // Auto-fill today's date
+    window.addEventListener('DOMContentLoaded', (event) => {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('billDate').value = today;
+    });
+
+    // Format date for the PDF (YYYY-MM-DD to DD-MM-YY)
+    function formatDateForPDF(dateString) {
+        if (!dateString) return "";
+        const parts = dateString.split('-');
+        if (parts.length === 3) {
+            const year = parts[0].substring(2); 
+            return `${parts[2]}-${parts[1]}-${year}`;
+        }
+        return dateString;
+    }
+
     let timeoutId;
     function debounceTableGeneration() {
         clearTimeout(timeoutId);
@@ -245,11 +262,12 @@
             data: {
                 orientation: document.getElementById('orientation').value,
                 bill_no: document.getElementById('billNo').value,
-                date: document.getElementById('billDate').value,
+                // Dates formatting function used here
+                date: formatDateForPDF(document.getElementById('billDate').value),
                 client_address: document.getElementById('clientAddress').value.split('\n').filter(line => line.trim() !== ""),
                 subject: document.getElementById('subject').value,
-                from_date: document.getElementById('periodFrom').value,
-                to_date: document.getElementById('periodTo').value,
+                from_date: formatDateForPDF(document.getElementById('periodFrom').value),
+                to_date: formatDateForPDF(document.getElementById('periodTo').value),
                 company_name: document.getElementById('companyName').value,
                 signer_name: document.getElementById('signerName').value,
                 columns: getColumnsArray(),
@@ -280,4 +298,4 @@
 </script>
 
 </body>
-</html> 
+</html>

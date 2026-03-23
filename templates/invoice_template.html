@@ -58,9 +58,7 @@
 
             {% if data.footers %}
                 {% for footer in data.footers %}
-                
                 {% set is_grand = 'GRAND' in footer.label|upper or 'TOTAL' == footer.label|upper %}
-                
                 <tr>
                     <td colspan="{{ data.columns|length - 1 }}" style="text-align: right; font-weight: bold; font-size: {{ '13px' if is_grand else '11px' }}; padding-right: 10px;">
                         {{ footer.label|upper }}:
@@ -79,17 +77,17 @@
             <td style="width: 65%;"></td> 
             <td style="width: 35%; text-align: center;">
                 {% if data.company_name %}
-                    <b>{{ 'For ' if not data.company_name.lower().startswith('for') else '' }}{{ data.company_name }}</b><br>
+                    <b style="display: block; margin-bottom: 2px;">{{ 'For ' if not data.company_name.lower().startswith('for') else '' }}{{ data.company_name }}</b>
                 {% endif %}
                 
                 {% if sig_b64 %}
-                    <img src="data:image/png;base64,{{ sig_b64 }}" class="sig-img"><br>
+                    <img src="data:image/png;base64,{{ sig_b64 }}" style="width: 120px; height: auto; margin: 2px 0;">
                 {% else %}
-                    <br><br><br><br>
+                    <br><br>
                 {% endif %}
                 
                 {% if data.signer_name %}
-                    <b>{{ data.signer_name if data.signer_name.startswith('(') else '(' ~ data.signer_name ~ ')' }}</b>
+                    <b style="display: block; margin-top: 2px;">{{ data.signer_name if data.signer_name.startswith('(') else '(' ~ data.signer_name ~ ')' }}</b>
                 {% endif %}
             </td>
         </tr>
